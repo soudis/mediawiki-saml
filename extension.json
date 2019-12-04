@@ -1,0 +1,61 @@
+{
+	"name": "miniOrange SAML 2.0 SSO",
+	"version": "1.1.2",
+	"author": [
+		"miniOrange"
+	],
+	"url": "https://www.mediawiki.org/wiki/Extension:SamlSingleSignOnAuth",
+	"descriptionmsg": "miniOrange SAML 2.0 SSO enables user to perform Single Sign On with any SAML 2.0 enabled Identity Provider.",
+	"license-name": "",
+	"type": "other",
+	"AutoloadClasses": {
+		"SamlSingleSignOnAuth":"SamlSingleSignOnAuth.php",
+		"SamlSingleSignOnAuthHooks": "SamlSingleSignOnAuth.hooks.php",
+		"SamlSingleSignOnAuthManager": "SamlSingleSignOnAuth.class.php",
+		"SpecialHelloWorld": "specials/SpecialHelloWorld.php",
+		"MoSamlUtilities": "includes/Utilities.php",
+		"SAML2_Assertion": "includes/Assertion.php",
+		"SAML2_Response": "includes/Response.php",
+		"SAML2_LogoutRequest": "includes/LogoutRequest.php",
+		"XMLSecurityKey": "includes/xmlseclibs.php",
+		"XMLSecurityDSig": "includes/xmlseclibs.php",
+		"XMLSecEnc": "includes/xmlseclibs.php"
+	},
+	"config": {
+		"SamlSingleSignOnAuthEnable": true,
+		"MoSamlHostName": "https://auth.miniorange.com",
+		"MoSamlIsBrokerOn": false,
+		"MoSamlLoginBindingType": "HttpRedirect"
+	},
+	"ExtensionMessagesFiles": {
+		"SamlSingleSignOnAuthAlias": "SamlSingleSignOnAuth.i18n.alias.php"
+	},
+	"Hooks": {
+		"UserLoginForm": [
+			"SamlSingleSignOnAuthHooks::hookLoginForm"
+		],
+		"UserLoadAfterLoadFromSession": [
+			"SamlSingleSignOnAuthHooks::hookUserLoad"
+		]
+	},
+	"MessagesDirs": {
+		"SamlSingleSignOnAuth": [
+			"i18n"
+		]
+	},
+	"ResourceModules": {
+		"ext.SamlSingleSignOnAuth.foo": {
+			"styles": [
+				"modules/ext.SamlSingleSignOnAuth.css"
+			],
+			"messages": [],
+			"dependencies": [
+			]
+		}
+	},
+	"ResourceFileModulePaths": {
+		"localBasePath": "",
+		"remoteExtPath": "SamlSingleSignOnAuth"
+	},
+	"manifest_version": 1
+}

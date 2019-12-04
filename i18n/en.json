@@ -1,0 +1,7 @@
+{
+	"@metadata": {
+		"authors": ["miniOrange"]
+	},
+	"mosaml-desc": "miniOrange SAML 2.0 SSO enables user to perform Single Sign On with any SAML 2.0 enabled Identity Provider.",
+	"mosaml-login-btn": "Login with $1"
+}
