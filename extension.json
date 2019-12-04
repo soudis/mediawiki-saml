@@ -36,6 +36,9 @@
 		],
 		"UserLoadAfterLoadFromSession": [
 			"SamlSingleSignOnAuthHooks::hookUserLoad"
+		],
+		"UserLogout": [
+			"SamlSingleSignOnAuthHooks::hookUserLogout"
 		]
 	},
 	"MessagesDirs": {

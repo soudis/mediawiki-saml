@@ -22,6 +22,8 @@ class SamlSingleSignOnAuthManager{
 
 	private $userName;
 
+	private $nameID;
+
 	private $user_email;
 
 	private $groupName;
@@ -204,7 +206,7 @@ class SamlSingleSignOnAuthManager{
 		
 		if($samlResponseXml->localName == 'LogoutResponse') {
 			//wp_logout(); --- replace with Mediawiki equivalent
-			header('Location: ' . site_url());
+			header('Location: ' . $this->getConfig('serverName'));
 			exit;
 		} else {
 			// It's a SAML Assertion
@@ -312,6 +314,8 @@ class SamlSingleSignOnAuthManager{
 					$this->groupName = $attrs[$groupName];
 				else
 					$this->groupName = array();
+
+				$this->nameID = $attrs['NameID'][0];
 			}
 
 			$this->printDebug( "Set attributes");
@@ -347,6 +351,12 @@ class SamlSingleSignOnAuthManager{
 				$this->printDebug( "Setting nickname.");
 				$user->setOption( 'nickname', $this->firstName );
 			}
+
+			if ( is_string( $this->nameID ) ) {
+				$this->printDebug( "Setting nameID.");
+				$user->setOption( 'name_id', $this->nameID );
+			}
+
 			if ( is_string( $this->firstName ) || is_string( $this->lastName ) ) {
 				$this->printDebug( "Setting realname.");
 				$user->setRealName( $this->firstName . ' ' . $this->lastName );

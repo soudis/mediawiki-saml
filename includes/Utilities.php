@@ -62,7 +62,7 @@ class MoSamlUtilities {
 						'" IssueInstant="' . self::generateTimestamp() .
 						'" Version="2.0" Destination="'. $destination . '">
 						<saml:Issuer xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">' . $issuer . '</saml:Issuer>
-						<saml:NameID xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">'. $nameId[0] . '</saml:NameID>';
+						<saml:NameID xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">'. $nameId . '</saml:NameID>';
 		if(!empty($sessionIndex)) {
 			$requestXmlStr .= '<samlp:SessionIndex>' . $sessionIndex[0] . '</samlp:SessionIndex>';
 		}

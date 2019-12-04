@@ -44,6 +44,46 @@ class SamlSingleSignOnAuthHooks {
 		return true;
 	}
 
+    public static function hookUserLogout($user) {
+    	global $wgServer, $wgOut;
+		$moSaml = SamlSingleSignOnAuthManager::getInstance();
+		$sp_base_url = $moSaml->getConfig('serverName');
+		if(empty($sp_base_url)) {
+			$sp_base_url = $wgServer;
+		}				
+		$acsUrl = $sp_base_url . "/";
+		$issuer = $sp_base_url . '/extensions/SamlSingleSignOnAuth/';
+		$ssoUrl = $moSaml->getConfig('logoutURL');			
+
+		$sendRelayState = $sp_base_url;				
+
+		$requestXML = MoSamlUtilities::createLogoutRequest( $user->getOption('name_id'),'', $issuer, $ssoUrl);
+
+		$samlRequest = "SAMLRequest=" . $requestXML . "&RelayState=" . urlencode($sendRelayState) . '&ReturnTo=' . $sp_base_url . '&SigAlg='. urlencode(XMLSecurityKey::RSA_SHA256);
+		$param =array( 'type' => 'private');
+		$key = new XMLSecurityKey(XMLSecurityKey::RSA_SHA256, $param);
+		$certFilePath = __DIR__ . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'sp-key.key';
+
+		$key->loadKey($certFilePath, TRUE);
+		$objXmlSecDSig = new XMLSecurityDSig();
+		$signature = $key->signData($samlRequest);
+		$signature = base64_encode($signature);
+		$redirect = $ssoUrl;
+		if (strpos($ssoUrl,'?') !== false) {
+			$redirect .= '&';
+		} else {
+			$redirect .= '?';
+		}
+
+		$redirect .= $samlRequest . '&Signature=' . urlencode($signature);			
+
+		
+		$wgOut->redirect($redirect);
+
+		return true;
+
+    }
+
 	public static function hookUserLoad( $user, &$result = null ){
 		global $wgUser, $wgBlockDisablesLogin, $wgCookieSecure, $wgCookieExpiration, $wgServer, $wgCookiePrefix;
 		if(isset($_REQUEST['option']) && $_REQUEST['option'] == 'saml_user_login' || !$wgUser->isLoggedIn() && !array_key_exists('SAMLResponse', $_REQUEST) &&  !array_key_exists('SAMLRequest', $_REQUEST)){
@@ -149,10 +189,6 @@ class SamlSingleSignOnAuthHooks {
 				$acsUrl = $sp_base_url . "/";
 				$issuer = $sp_base_url . '/extensions/SamlSingleSignOnAuth/';
 				$ssoUrl = $moSaml->getConfig('logoutURL');				
-				$sp_base_url = $moSaml->getConfig('serverName');
-				if(empty($sp_base_url)) {
-					$sp_base_url = $wgServer;
-				}
 				/*if($_REQUEST['option'] == 'testConfig')
 					$sendRelayState = 'testValidate';
 				else*/ 

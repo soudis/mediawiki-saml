@@ -22,6 +22,9 @@ $wgMoSamlIssuer = 'https://auth.miniorange.com/moas';
 # Enter SAML Login URL or ACS(Assertion Consumer Service) URL here 
 $wgMoSamlLoginURL = 'https://auth.miniorange.com/moas/idp/samlsso';
 
+# Enter SAML SLO (Single Logout) URL here 
+$wgMoSamlLogoutURL = 'https://auth.miniorange.com/moas/idp/samlsso';
+
 # Set binding type for login. Two possible values - HttpRedirect and HttpPost
 $wgMoSamlLoginBindingType = 'HttpRedirect';
 
