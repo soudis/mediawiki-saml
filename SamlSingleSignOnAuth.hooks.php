@@ -192,8 +192,8 @@ class SamlSingleSignOnAuthHooks {
 				/*if($_REQUEST['option'] == 'testConfig')
 					$sendRelayState = 'testValidate';
 				else*/ 
-				if ( isset( $_REQUEST['returnto']) ) 
-					$sendRelayState = $_REQUEST['returnto'];
+				if (isset ( $_REQUEST['RelayState']))
+					$sendRelayState = $_REQUEST['RelayState'];
 				else 
 					$sendRelayState = $sp_base_url;				
 
