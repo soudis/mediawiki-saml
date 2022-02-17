@@ -9,6 +9,7 @@ Download the extension ZIP and extract ZIP to mediawiki host under extensions fo
 Add following configuration to LocalSettings.php and change configuration values:
 ---------------------------------------------------------------------------------
 
+```php
 # miniOrange SAML Extension settings
 # Loads SAML extension
 wfLoadExtension( 'SamlSingleSignOnAuth' );
@@ -76,6 +77,7 @@ $wgMoSamlCustomerKey = 12345;
 # Set this to true if you don't want your users to view website without being logged in using SAML.
 # Users will be redirected to the IdP if user is not logged in. Make sure logout is enabled for this.
 $wgMoSamlRegisteredOnlyAccess = false;
+```
 
 Versions
 ---------
